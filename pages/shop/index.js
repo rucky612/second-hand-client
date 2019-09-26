@@ -1,0 +1,85 @@
+import Link from 'next/link';
+import React, { Component } from 'react';
+import { Typography, Card, List } from 'antd';
+import withAuth from '../../utils/withAuth';
+import ProductService from '../../utils/ProductService';
+import URL from '../../constants/route-url';
+
+const { Title } = Typography;
+const { Meta } = Card;
+
+const Product = new ProductService();
+
+export class Shop extends Component {
+  static async getInitialProps(ctx) {
+    const products = await Product.getProducts();
+    return { products };
+  }
+
+  renderDescription = item => (
+    <div>
+      <div>{item.p_description}</div>
+      <div style={{ color: 'black' }}>{item.p_price} 원</div>
+    </div>
+  );
+
+  renderProducts = item => {
+    return (
+      <List.Item key={item.p_id}>
+        <Link
+          href={{ pathname: URL.SHOP.ID.link, query: { id: item.p_id } }}
+          as={`${URL.SHOP.link}/${item.p_id}`}
+        >
+          <Card
+            style={{ width: 210, cursor: 'pointer' }}
+            cover={
+              item.p_image ? (
+                <img alt={item.p_image[0].alt} src={item.p_image[0].src} />
+              ) : (
+                <img alt="이미지 준비중입니다." src="*" />
+              )
+            }
+          >
+            <Meta
+              title={item.p_name}
+              description={this.renderDescription(item)}
+            />
+          </Card>
+        </Link>
+      </List.Item>
+    );
+  };
+
+  getData = () => {
+    const { products } = this.props;
+    return products.rows.map(item => ({
+      ...item,
+      title: item.p_name,
+    }));
+  };
+
+  render() {
+    const { products } = this.props;
+    return (
+      <div>
+        <Title level={4}>{`Total : ${products.count}`}</Title>
+        <List
+          grid={{
+            gutter: 16,
+            xs: 1,
+            sm: 2,
+            md: 3,
+            lg: 4,
+            xl: 6,
+            xxl: 3,
+          }}
+          itemLayout="horizontal"
+          dataSource={this.getData()}
+          renderItem={this.renderProducts}
+        />
+      </div>
+    );
+  }
+}
+
+export default withAuth(Shop);
