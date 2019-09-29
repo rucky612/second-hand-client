@@ -16,7 +16,6 @@ export class LoginForm extends Component {
       } else {
         const { u_name, u_password } = values;
         const res = await Auth.login(u_name, u_password);
-        console.log(res);
         if (res) {
           Router.push(URL.HOME.link);
         } else {
