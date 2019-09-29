@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import Router from 'next/router';
 import { Button, Table, Modal, message } from 'antd';
 import withAuth from '../utils/withAuth';
 import AuthService from '../utils/AuthService';
 import CartService from '../utils/CartService';
-import Router from 'next/dist/client/router';
 import URL from '../constants/route-url';
 
 const { confirm } = Modal;
@@ -36,12 +36,16 @@ export class Cart extends Component {
           key: 'p_image',
           render: (text, record) =>
             record.p_image ? (
-            <div>
-              <img style={{ width: '50px'}} src={record.p_image.src} alt={record.p_image.alt} />
-            </div>
-          ) : (
-            <div>이미지 준비중...</div>
-            )
+              <div>
+                <img
+                  style={{ width: '50px' }}
+                  src={record.p_image.src}
+                  alt={record.p_image.alt}
+                />
+              </div>
+            ) : (
+              <div>이미지 준비중...</div>
+            ),
         },
         {
           title: '판매가',
@@ -62,31 +66,32 @@ export class Cart extends Component {
             <Button onClick={() => this.deleteCart(record.c_id)}>
               삭제하기
             </Button>
-          )
+          ),
         },
-      ]
-    }
+      ],
+    };
   }
 
   static async getInitialProps(ctx) {
     const token = Auth.getToken(ctx.req);
-    const cart =  await CartSer.getCarts(token);
+    const cart = await CartSer.getCarts(token);
     return { cart };
   }
 
   onCheckboxChange = (selectedRowKeys, selectedRows) => {
     this.setState({
-      selected: selectedRows
-    })
+      selected: selectedRows,
+    });
   };
 
-  addIndexRows = (rows) => rows.map((row, index) => ({
-    ...row,
-    key:  index + 1,
-    c_index: index + 1
-  }));
+  addIndexRows = rows =>
+    rows.map((row, index) => ({
+      ...row,
+      key: index + 1,
+      c_index: index + 1,
+    }));
 
-  deleteCart = (id) => {
+  deleteCart = id => {
     confirm({
       title: '상품을 장바구니에서 삭제하시겠습니까?',
       okText: '삭제',
@@ -94,10 +99,10 @@ export class Cart extends Component {
       cancelText: '취소',
       async onOk() {
         const res = await CartSer.deleteCart(id);
-        if(res.success) {
-          Router.replace(Router.pathname)
+        if (res.success) {
+          Router.replace(Router.pathname);
         } else {
-          message.error(res.msg)
+          message.error(res.msg);
         }
       },
     });
@@ -106,7 +111,7 @@ export class Cart extends Component {
   postOrders = () => {
     const { selected } = this.state;
     const queryStr = JSON.stringify(selected);
-    Router.push({ pathname: URL.ORDER.link, query: { selected: queryStr } })
+    Router.push({ pathname: URL.ORDER.link, query: { selected: queryStr } });
   };
 
   render() {
@@ -121,11 +126,16 @@ export class Cart extends Component {
           columns={columns}
           pagination={false}
           rowSelection={{
-            onChange: this.onCheckboxChange
+            onChange: this.onCheckboxChange,
           }}
         />
-        <div style={{ width: '40%', margin: '48px auto'}}>
-          <Button onClick={this.postOrders} disabled={disabled} block size="large">
+        <div style={{ width: '40%', margin: '48px auto' }}>
+          <Button
+            onClick={this.postOrders}
+            disabled={disabled}
+            block
+            size="large"
+          >
             주문하기
           </Button>
         </div>

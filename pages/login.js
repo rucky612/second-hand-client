@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import Router from 'next/router';
-import Link from 'next/link';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 import AuthService from '../utils/AuthService';
 import withAuth from '../utils/withAuth';
-import URL from "../constants/route-url"
+import URL from '../constants/route-url';
 
 const Auth = new AuthService();
-
-const LoginWrapper = styled.div`
-  margin: auto;
-  width: 540px;
-`;
 
 export class LoginForm extends Component {
   handleSubmit = async e => {
@@ -23,11 +16,11 @@ export class LoginForm extends Component {
       } else {
         const { u_name, u_password } = values;
         const res = await Auth.login(u_name, u_password);
-        console.log(res)
-        if(res) {
+        console.log(res);
+        if (res) {
           Router.push(URL.HOME.link);
         } else {
-
+          message.error('아이디 또는 비밀번호를 확인해주세요');
         }
       }
     });
@@ -36,7 +29,7 @@ export class LoginForm extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <LoginWrapper>
+      <div style={{ margin: 'auto', width: '540px' }}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item>
             {getFieldDecorator('u_name', {
@@ -64,23 +57,12 @@ export class LoginForm extends Component {
             )}
           </Form.Item>
           <Form.Item>
-            <Link href="/password">
-              <a className="Login-form-forgot" href="">
-                비번 찾기
-              </a>
-            </Link>
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(<Checkbox>아이디 저장</Checkbox>)}
             <Button block type="primary" htmlType="submit">
               로그인
             </Button>
           </Form.Item>
         </Form>
-      </LoginWrapper>
+      </div>
     );
   }
 }

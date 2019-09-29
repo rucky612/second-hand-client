@@ -21,7 +21,7 @@ export default class AuthService {
 
   getToken = req => {
     // Retrieves the user token from cookie
-    if (req) {
+    if (req && req.headers.cookie) {
       return req.headers.cookie
         ? req.headers.cookie.replace(
             /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
@@ -57,13 +57,13 @@ export default class AuthService {
       u_password: pwd,
     };
     try {
-      const res = await axios.post(`${this.domain}/auth/login`, user)
+      const res = await axios.post(`${this.domain}/auth/login`, user);
       this.setToken(res.data.token);
-      return true
-    } catch(e) {
+      return true;
+    } catch (e) {
       // message.error('아이디 또는 비밀번호를 확인해주세요.', 3);
-      console.log(e)
-      return false
+      console.log({ e });
+      return false;
     }
   };
 

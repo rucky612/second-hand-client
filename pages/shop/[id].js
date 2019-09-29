@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { Carousel, Descriptions, Form, Button, Row, Col, Modal, message } from 'antd';
+import {
+  Carousel,
+  Descriptions,
+  Form,
+  Button,
+  Row,
+  Col,
+  Modal,
+  message,
+} from 'antd';
 import NumberInput from '../../components/NumberInput';
 import ProductService from '../../utils/ProductService';
 import CartService from '../../utils/CartService';
@@ -58,7 +67,7 @@ class ShopDetail extends Component {
             },
           });
         } else {
-          this.postCart(values)
+          this.postCart(values);
         }
       }
     });
@@ -67,13 +76,13 @@ class ShopDetail extends Component {
   postCart = async ({ amount }) => {
     const { product } = this.props;
     const token = Auth.getToken();
-    const res = await Cart.postCart(product.p_id, token, amount)
-    if(res.success) {
+    const res = await Cart.postCart(product.p_id, token, amount);
+    if (res.success) {
       Router.push(URL.CART.link);
     } else {
-      message.error(res.msg)
+      message.error(res.msg);
     }
-  }
+  };
 
   checkIntNumber = (rule, value, cb) => {
     const { product } = this.props;
@@ -84,7 +93,7 @@ class ShopDetail extends Component {
     if (value && !checkNum) {
       cb('양의 숫자만 입력해주세요.');
     }
-    if (Number(value) >= Number(product.p_amount)) {
+    if (Number(value) > Number(product.p_amount)) {
       cb('상품수량을 초과할 수 없습니다. 주문량을 줄여주세요.');
     }
     cb();
@@ -93,6 +102,7 @@ class ShopDetail extends Component {
   render() {
     const { product, form } = this.props;
     const { getFieldDecorator } = form;
+    const disabled = product.p_amount <= 0;
     return (
       <div>
         <Row gutter={16}>
@@ -141,7 +151,7 @@ class ShopDetail extends Component {
                 )}
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" disabled={disabled}>
                   장바구니 담기
                 </Button>
               </Form.Item>
@@ -155,4 +165,4 @@ class ShopDetail extends Component {
 
 const ShopForm = Form.create()(ShopDetail);
 
-export default withAuth(ShopForm);
+export default ShopForm;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
-import _ from "lodash"
+import _ from 'lodash';
 import { Button, Table, Descriptions } from 'antd';
 import AuthService from '../../utils/AuthService';
 import UserService from '../../utils/UserService';
@@ -42,11 +42,15 @@ class Mypage extends Component {
           render: (text, record) =>
             record.p_image ? (
               <div>
-                <img style={{ width: '50px'}} src={record.p_image.src} alt={record.p_image.alt} />
+                <img
+                  style={{ width: '50px' }}
+                  src={record.p_image.src}
+                  alt={record.p_image.alt}
+                />
               </div>
             ) : (
               <div>이미지 준비중...</div>
-            )
+            ),
         },
         {
           title: '판매가',
@@ -62,10 +66,10 @@ class Mypage extends Component {
           title: '주문상태',
           dataIndex: 'o_status',
           key: 'o_status',
-          render: text => this.renderStatus(text)
+          render: text => this.renderStatus(text),
         },
-      ]
-    }
+      ],
+    };
   }
 
   static async getInitialProps(ctx) {
@@ -75,30 +79,31 @@ class Mypage extends Component {
     return { user: userData ? userData.user : null, orders };
   }
 
-  addIndexRows = (rows) => rows.map((row, index) => ({
-    ...row,
-    key:  index + 1,
-    o_index: index + 1
-  }));
+  addIndexRows = rows =>
+    rows.map((row, index) => ({
+      ...row,
+      key: index + 1,
+      o_index: index + 1,
+    }));
 
-  renderStatus = (num) => {
-    if(num === 1) {
-      return "입고"
+  renderStatus = num => {
+    if (num === 1) {
+      return '입고';
     }
-    if(num === 2) {
-      return "배송대기"
+    if (num === 2) {
+      return '배송중';
     }
-    if(num === 3) {
-      return "배송중"
+    if (num === 3) {
+      return '배송완료';
     }
-    if(num === 4) {
-      return "배송 완료"
+    if (num === 4) {
+      return '반품중';
     }
-    return "X"
+    return 'X';
   };
 
   pushModify = () => {
-    Router.push(URL.MYPAGE.MODIFY.link)
+    Router.push(URL.MYPAGE.MODIFY.link);
   };
 
   render() {
@@ -112,7 +117,10 @@ class Mypage extends Component {
             title={
               <div>
                 개인정보
-                <Button onClick={this.pushModify} style={{ float: "right", height: "24px" }}>
+                <Button
+                  onClick={this.pushModify}
+                  style={{ float: 'right', height: '24px' }}
+                >
                   수정
                 </Button>
               </div>
@@ -121,18 +129,24 @@ class Mypage extends Component {
             column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
             style={{ marginBottom: '24px' }}
           >
-            <Descriptions.Item label="이름" span={1}>{user.u_name}</Descriptions.Item>
-            <Descriptions.Item label="전화번호" span={1}>{user.u_phone}</Descriptions.Item>
-            <Descriptions.Item label="이메일" span={1}>{user.u_email}</Descriptions.Item>
+            <Descriptions.Item label="이름" span={1}>
+              {user.u_name}
+            </Descriptions.Item>
+            <Descriptions.Item label="전화번호" span={1}>
+              {user.u_phone}
+            </Descriptions.Item>
+            <Descriptions.Item label="이메일" span={1}>
+              {user.u_email}
+            </Descriptions.Item>
             <Descriptions.Item label="주소">{user.u_address}</Descriptions.Item>
           </Descriptions>
         )}
-        <h3 style={{ marginBottom: '24px', fontWeight: "bold" }}>주문 현황</h3>
+        <h3 style={{ marginBottom: '24px', fontWeight: 'bold' }}>주문 현황</h3>
         <Table
           dataSource={this.addIndexRows(rows)}
           columns={columns}
           pagination={false}
-          scroll={{x: 686}}
+          scroll={{ x: 686 }}
         />
       </div>
     );

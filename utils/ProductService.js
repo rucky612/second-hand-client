@@ -19,9 +19,20 @@ export default class ProductService {
           },
         },
       });
-      return res.data;
+      return {
+        msg: 'success',
+        success: true,
+        rows: res.data.rows,
+        count: res.data.count,
+      };
     } catch (e) {
       console.log(e);
+      return {
+        msg: e.message,
+        success: false,
+        rows: [],
+        count: 0,
+      };
     }
   };
 

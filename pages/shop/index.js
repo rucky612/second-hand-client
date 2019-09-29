@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React, { Component } from 'react';
-import { Typography, Card, List } from 'antd';
+import { Typography, Card, List, message } from 'antd';
 import withAuth from '../../utils/withAuth';
 import ProductService from '../../utils/ProductService';
 import URL from '../../constants/route-url';
@@ -16,6 +16,13 @@ export class Shop extends Component {
     return { products };
   }
 
+  componentDidMount() {
+    const { products } = this.props;
+    if (!products.success) {
+      message.error(products.msg);
+    }
+  }
+
   renderDescription = item => (
     <div>
       <div>{item.p_description}</div>
@@ -26,10 +33,7 @@ export class Shop extends Component {
   renderProducts = item => {
     return (
       <List.Item key={item.p_id}>
-        <Link
-          href={{ pathname: URL.SHOP.ID.link, query: { id: item.p_id } }}
-          as={`${URL.SHOP.link}/${item.p_id}`}
-        >
+        <Link href={URL.SHOP.ID.link} as={`${URL.SHOP.link}/${item.p_id}`}>
           <Card
             style={{ width: 210, cursor: 'pointer' }}
             cover={

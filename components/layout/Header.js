@@ -6,10 +6,8 @@ import URL from '../../constants/route-url';
 const { Item } = Menu;
 const { Header } = Layout;
 
-function activeItem(path, href) {
-  return path === href && path !== URL.HOME.link
-    ? 'ant-menu-item ant-menu-item-selected'
-    : 'ant-menu-item';
+function activeItem(path, link) {
+  return path === link && path !== URL.HOME.link;
 }
 
 function ShHeader(props) {
@@ -37,6 +35,7 @@ function ShHeader(props) {
       <div className="logo" />
       <Menu
         mode="horizontal"
+        onSelect={item => activeItem(router.asPath, item.key)}
         style={{
           lineHeight: '64px',
           borderBottom: 'inherit',
@@ -45,11 +44,10 @@ function ShHeader(props) {
         }}
       >
         {list.map(
-          (item, index) =>
+          item =>
             item.text && (
               <Item
-                key={6 - index}
-                className={activeItem(router.asPath, item.link)}
+                key={item.link}
                 style={{ fontWeight: '600' }}
                 onClick={item.onClick}
               >

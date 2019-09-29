@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Router from 'next/router';
-import styled from 'styled-components';
 import axios from 'axios';
 import { Form, Input, Select, Checkbox, Button, message } from 'antd';
 import UserService from '../utils/UserService';
@@ -11,11 +10,6 @@ import withAuth from '../utils/withAuth';
 const { Option } = Select;
 
 const User = new UserService();
-
-const SingupWrapper = styled.div`
-  margin: auto;
-  width: 640px;
-`;
 
 class SignupForm extends Component {
   constructor(props) {
@@ -129,7 +123,7 @@ class SignupForm extends Component {
 
     return (
       <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-        <SingupWrapper>
+        <div style={{ margin: 'auto', width: '640px' }}>
           <Form.Item label="아이디">
             {getFieldDecorator('u_name', {
               rules: [
@@ -216,7 +210,7 @@ class SignupForm extends Component {
               확인
             </Button>
           </Form.Item>
-        </SingupWrapper>
+        </div>
       </Form>
     );
   }
