@@ -1,11 +1,9 @@
-import Link from 'next/link';
-import React, { Component } from 'react';
-import { Typography, Card, List, message } from 'antd';
-import withAuth from '../../utils/withAuth';
-import ProductService from '../../utils/ProductService';
-import URL from '../../constants/route-url';
+import Link from "next/link";
+import React, { Component } from "react";
+import { Card, List, message } from "antd";
+import ProductService from "../../utils/ProductService";
+import URL from "../../constants/route-url";
 
-const { Title } = Typography;
 const { Meta } = Card;
 
 const Product = new ProductService();
@@ -26,7 +24,7 @@ export class Shop extends Component {
   renderDescription = item => (
     <div>
       <div>{item.p_description}</div>
-      <div style={{ color: 'black' }}>{item.p_price} 원</div>
+      <div style={{ color: "black" }}>{item.p_price} 원</div>
     </div>
   );
 
@@ -35,7 +33,7 @@ export class Shop extends Component {
       <List.Item key={item.p_id}>
         <Link href={URL.SHOP.ID.link} as={`${URL.SHOP.link}/${item.p_id}`}>
           <Card
-            style={{ width: 210, cursor: 'pointer' }}
+            style={{ width: 210, cursor: "pointer" }}
             cover={
               item.p_image ? (
                 <img alt={item.p_image[0].alt} src={item.p_image[0].src} />
@@ -58,15 +56,13 @@ export class Shop extends Component {
     const { products } = this.props;
     return products.rows.map(item => ({
       ...item,
-      title: item.p_name,
+      title: item.p_name
     }));
   };
 
   render() {
-    const { products } = this.props;
     return (
       <div>
-        <Title level={4}>{`Total : ${products.count}`}</Title>
         <List
           grid={{
             gutter: 16,
@@ -75,7 +71,7 @@ export class Shop extends Component {
             md: 3,
             lg: 4,
             xl: 6,
-            xxl: 3,
+            xxl: 3
           }}
           itemLayout="horizontal"
           dataSource={this.getData()}
@@ -86,4 +82,4 @@ export class Shop extends Component {
   }
 }
 
-export default withAuth(Shop);
+export default Shop;

@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import Router from 'next/router';
-import { Button, Table, Modal, message } from 'antd';
-import withAuth from '../utils/withAuth';
-import AuthService from '../utils/AuthService';
-import CartService from '../utils/CartService';
-import URL from '../constants/route-url';
+import React, { Component } from "react";
+import Router from "next/router";
+import { Button, Table, Modal, message } from "antd";
+import AuthService from "../utils/AuthService";
+import CartService from "../utils/CartService";
+import URL from "../constants/route-url";
 
 const { confirm } = Modal;
 
@@ -19,56 +18,56 @@ export class Cart extends Component {
       selected: [],
       columns: [
         {
-          title: '번호',
-          dataIndex: 'c_index',
-          key: 'c_index',
-          width: 80,
+          title: "번호",
+          dataIndex: "c_index",
+          key: "c_index",
+          width: 80
         },
         {
-          title: '상품명',
-          dataIndex: 'p_name',
-          key: 'p_name',
-          width: 180,
+          title: "상품명",
+          dataIndex: "p_name",
+          key: "p_name",
+          width: 180
         },
         {
-          title: '이미지',
-          dataIndex: 'p_image',
-          key: 'p_image',
+          title: "이미지",
+          dataIndex: "p_image",
+          key: "p_image",
           render: (text, record) =>
             record.p_image ? (
               <div>
                 <img
-                  style={{ width: '50px' }}
+                  style={{ width: "50px" }}
                   src={record.p_image.src}
                   alt={record.p_image.alt}
                 />
               </div>
             ) : (
               <div>이미지 준비중...</div>
-            ),
+            )
         },
         {
-          title: '판매가',
-          dataIndex: 'p_price',
-          key: 'p_price',
+          title: "판매가",
+          dataIndex: "p_price",
+          key: "p_price"
         },
         {
-          title: '수량',
-          dataIndex: 'c_amount',
-          key: 'c_amount',
+          title: "수량",
+          dataIndex: "c_amount",
+          key: "c_amount"
         },
         {
-          title: '주문관리',
-          dataIndex: 'action',
-          key: 'action',
+          title: "주문관리",
+          dataIndex: "action",
+          key: "action",
           width: 130,
           render: (_, record) => (
             <Button onClick={() => this.deleteCart(record.c_id)}>
               삭제하기
             </Button>
-          ),
-        },
-      ],
+          )
+        }
+      ]
     };
   }
 
@@ -80,7 +79,7 @@ export class Cart extends Component {
 
   onCheckboxChange = (selectedRowKeys, selectedRows) => {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRows
     });
   };
 
@@ -88,15 +87,15 @@ export class Cart extends Component {
     rows.map((row, index) => ({
       ...row,
       key: index + 1,
-      c_index: index + 1,
+      c_index: index + 1
     }));
 
   deleteCart = id => {
     confirm({
-      title: '상품을 장바구니에서 삭제하시겠습니까?',
-      okText: '삭제',
-      okType: 'danger',
-      cancelText: '취소',
+      title: "상품을 장바구니에서 삭제하시겠습니까?",
+      okText: "삭제",
+      okType: "danger",
+      cancelText: "취소",
       async onOk() {
         const res = await CartSer.deleteCart(id);
         if (res.success) {
@@ -104,7 +103,7 @@ export class Cart extends Component {
         } else {
           message.error(res.msg);
         }
-      },
+      }
     });
   };
 
@@ -126,10 +125,10 @@ export class Cart extends Component {
           columns={columns}
           pagination={false}
           rowSelection={{
-            onChange: this.onCheckboxChange,
+            onChange: this.onCheckboxChange
           }}
         />
-        <div style={{ width: '40%', margin: '48px auto' }}>
+        <div style={{ width: "40%", margin: "48px auto" }}>
           <Button
             onClick={this.postOrders}
             disabled={disabled}
@@ -144,4 +143,4 @@ export class Cart extends Component {
   }
 }
 
-export default withAuth(Cart);
+export default Cart;

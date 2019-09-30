@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Router, { useRouter } from 'next/router';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import Router, { useRouter } from "next/router";
+import styled from "styled-components";
 import {
   Carousel,
   Descriptions,
@@ -9,14 +9,13 @@ import {
   Row,
   Col,
   Modal,
-  message,
-} from 'antd';
-import NumberInput from '../../components/NumberInput';
-import ProductService from '../../utils/ProductService';
-import CartService from '../../utils/CartService';
-import AuthService from '../../utils/AuthService';
-import withAuth from '../../utils/withAuth';
-import URL from '../../constants/route-url';
+  message
+} from "antd";
+import NumberInput from "../../components/NumberInput";
+import ProductService from "../../utils/ProductService";
+import CartService from "../../utils/CartService";
+import AuthService from "../../utils/AuthService";
+import URL from "../../constants/route-url";
 
 const { confirm } = Modal;
 
@@ -55,16 +54,16 @@ class ShopDetail extends Component {
     e.preventDefault();
     form.validateFields((err, values) => {
       if (err) {
-        console.log('Received errors of form: ', values);
+        console.log("Received errors of form: ", values);
       } else {
         if (!tokenAuth) {
           confirm({
-            title: '로그인이 필요한 작업입니다. 로그인 하러 가시겠습니까?',
-            okText: '로그인',
-            cancelText: '취소',
+            title: "로그인이 필요한 작업입니다. 로그인 하러 가시겠습니까?",
+            okText: "로그인",
+            cancelText: "취소",
             onOk() {
               Router.push(URL.LOGIN.link);
-            },
+            }
           });
         } else {
           this.postCart(values);
@@ -88,13 +87,13 @@ class ShopDetail extends Component {
     const { product } = this.props;
     const checkNum = /^[0-9]+$/.test(value);
     if (!value) {
-      cb('');
+      cb("");
     }
     if (value && !checkNum) {
-      cb('양의 숫자만 입력해주세요.');
+      cb("양의 숫자만 입력해주세요.");
     }
     if (Number(value) > Number(product.p_amount)) {
-      cb('상품수량을 초과할 수 없습니다. 주문량을 줄여주세요.');
+      cb("상품수량을 초과할 수 없습니다. 주문량을 줄여주세요.");
     }
     cb();
   };
@@ -117,7 +116,7 @@ class ShopDetail extends Component {
           </Col>
           <Col span={12}>
             <Descriptions
-              style={{ marginBottom: '30px' }}
+              style={{ marginBottom: "30px" }}
               title="상품 정보"
               bordered
             >
@@ -139,15 +138,15 @@ class ShopDetail extends Component {
             </Descriptions>
             <Form onSubmit={this.handleSubmit}>
               <Form.Item>
-                {getFieldDecorator('amount', {
+                {getFieldDecorator("amount", {
                   rules: [
-                    { required: true, message: '수량을 입력해주세요' },
+                    { required: true, message: "수량을 입력해주세요" },
                     {
-                      validator: this.checkIntNumber,
-                    },
-                  ],
+                      validator: this.checkIntNumber
+                    }
+                  ]
                 })(
-                  <NumberInput style={{ width: '130px' }} placeholder="수량" />,
+                  <NumberInput style={{ width: "130px" }} placeholder="수량" />
                 )}
               </Form.Item>
               <Form.Item>

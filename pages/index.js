@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import withAuth from '../utils/withAuth';
+import React, { Component } from "react";
 
 class Root extends Component {
   render() {
@@ -12,4 +11,4 @@ class Root extends Component {
   }
 }
 
-export default withAuth(Root);
+export default Root;
